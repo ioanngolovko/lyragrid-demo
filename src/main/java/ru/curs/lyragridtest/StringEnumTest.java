@@ -12,11 +12,13 @@ import javax.swing.JSlider;
 import javax.swing.border.EmptyBorder;
 
 import ru.curs.celesta.CelestaException;
-import ru.curs.lyra.grid.Rules;
+import ru.curs.celesta.dbutils.adaptors.StaticDataAdaptor;
 import ru.curs.lyra.grid.VarcharFieldEnumerator;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.Arrays;
+import java.util.List;
 
 public class StringEnumTest extends JFrame {
 
@@ -28,19 +30,24 @@ public class StringEnumTest extends JFrame {
 	private JSlider slider;
 
 	public StringEnumTest() throws CelestaException {
-		final Rules rules = new Rules() {
+
+		StaticDataAdaptor staticDataAdaptor = new StaticDataAdaptor() {
 			@Override
-			public String getRules() {
-				return "<А<Б<В<Г<Д<Е<Ж<З<И<Й<К<Л<М<Н<О<П<Р<С<Т<У<Ф<Х<Ц<Ч<Ш<Щ<Ъ<Ы<Ь<Э<Ю<Я";
+			public List<String> selectStaticStrings(List<String> data, String columnName, String orderBy) throws CelestaException {
+				return Arrays.asList(
+						"<А<Б<В<Г<Д<Е<Ж<З<И<Й<К<Л<М<Н<О<П<Р<С<Т<У<Ф<Х<Ц<Ч<Ш<Щ<Ъ<Ы<Ь<Э<Ю<Я"
+								.split("<")
+				);
 			}
 
 			@Override
-			public String getName() {
-				return "simple";
+			public int compareStrings(String left, String right) throws CelestaException {
+				return left.compareTo(right);
 			}
 		};
 
-		num = new VarcharFieldEnumerator(rules, "ВАНЯ", "МАША", 4);
+
+		num = new VarcharFieldEnumerator(staticDataAdaptor, "ВАНЯ", "МАША", 4);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 596, 194);
@@ -67,27 +74,27 @@ public class StringEnumTest extends JFrame {
 
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+				gl_contentPane.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(lblNum)
-							.addGap(181)
-							.addComponent(lblVal))
-						.addComponent(slider, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE))
-					.addContainerGap())
+								.addContainerGap()
+								.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+										.addGroup(gl_contentPane.createSequentialGroup()
+												.addComponent(lblNum)
+												.addGap(181)
+												.addComponent(lblVal))
+										.addComponent(slider, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE))
+								.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNum)
-						.addComponent(lblVal))
-					.addPreferredGap(ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
-					.addComponent(slider, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(28))
+				gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+								.addContainerGap()
+								.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+										.addComponent(lblNum)
+										.addComponent(lblVal))
+								.addPreferredGap(ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+								.addComponent(slider, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addGap(28))
 		);
 		contentPane.setLayout(gl_contentPane);
 

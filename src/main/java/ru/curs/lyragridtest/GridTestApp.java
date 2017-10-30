@@ -152,8 +152,7 @@ public class GridTestApp extends JFrame {
 
 	private void initCelesta() throws CelestaException {
 		Properties p = Settings.getSettings();
-		Celesta.initialize(p);
-		celesta = Celesta.getInstance();
+		celesta = Celesta.createInstance(p);
 		celesta.login("super", "super");
 		gf = (BasicGridForm) celesta.runPython("super", "lyra.lyraplayer.getFormInstance", "kladr.gridform.StreetGrid")
 				.__tojava__(BasicGridForm.class);
